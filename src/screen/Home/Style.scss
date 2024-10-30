@@ -1,0 +1,85 @@
+.home-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+  margin-top: 27px;
+
+  .date-box {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: white;
+    width: 300px;
+    height: 72px;
+    padding: 15px 0px 15px 8px;
+    box-sizing: border-box;
+    margin-top: 15px;
+
+    .date-contain {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-left: 0px;
+
+      .texts {
+        display: flex;
+        flex-direction: column;
+        margin-left: 5px;
+        .date-label {
+          font-weight: bold;
+          color: #2f4eb4;
+          margin-right: 4px;
+        }
+
+        .date {
+          font-size: 17px;
+          color: #5d686e;
+        }
+      }
+    }
+    .button-container {
+      display: flex;
+      flex-direction: column;
+
+      .date-button {
+        margin-bottom: 4px;
+        text-transform: none;
+        width: 56px;
+        height: 24px;
+        border: 1px solid #5d686e;
+        color: #5d686e;
+        background-color: #ffffff;
+        border-radius: 5px;
+        cursor: pointer;
+        user-select: none;
+      }
+      .date-button.selected {
+        background-color: gray;
+        color: white !important;
+      }
+    }
+  }
+
+  .find-ticket-button {
+    margin-top: 21px;
+    text-transform: none;
+    background-color: #2f4eb4;
+    width: 208px;
+    height: 41px;
+  }
+
+  .bottom-description {
+    width: 300px;
+    padding: 13px;
+    margin-top: 23px;
+    background-color: white;
+    box-sizing: border-box;
+  }
+  @media (max-width: 600px) {
+    .bottom-description {
+      width: 100%;
+    }
+  }
+}
