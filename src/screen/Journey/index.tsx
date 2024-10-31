@@ -73,6 +73,9 @@ const Journey = () => {
                 setError(err.message);
                 setLoading(false);
             });
+        } else {
+            setError("Verileri çekerken bir hata oluştur..!");
+            setLoading(false);
         }
     }, [departureDate, destinationId, originId, value])
 
