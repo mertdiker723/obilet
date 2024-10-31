@@ -11,7 +11,7 @@ import AutocompleteInput from '../../common/AutocompleteInput';
 import { useData } from '../../core/store/AppStore';
 
 // Core
-import { GetBusLocations } from '../../core/apiRoutes/route';
+import { GetBusLocations, TEST_DEVICE_ID, TEST_SESSION_ID } from '../../core/apiRoutes/route';
 import { formatToCustomDate, getFormattedDate } from '../../core/utils/helper';
 
 // Common
@@ -71,50 +71,47 @@ const Home = () => {
     const { value } = useData();
 
     useEffect(() => {
-        if (value?.status === 'Success') {
-            const { data } = value || {};
-            const deviceId = data ? data['device-id'] : undefined;
-            const sessionId = data ? data['session-id'] : undefined;
-
-            axios.post(
-                GetBusLocations,
-                {
-                    "data": null,
-                    "device-session": {
-                        "session-id": sessionId,
-                        "device-id": deviceId
-                    },
-                    "language": "tr-TR"
+        const { data } = value || {};
+        const sessionId = data ? data['session-id'] : TEST_SESSION_ID;
+        const deviceId = data ? data['device-id'] : TEST_DEVICE_ID;
+        axios.post(
+            GetBusLocations,
+            {
+                "data": null,
+                "device-session": {
+                    "session-id": sessionId,
+                    "device-id": deviceId,
                 },
-                {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Basic ${process.env.REACT_APP_API_CLIENT_TOKEN}`,
-                    },
-                }
-            ).then((response) => {
-                const { data } = response || {};
-                const convertDataArray = (dataArray: any) => {
-                    return dataArray.map((data: any) => {
-                        return {
-                            value: data.id,
-                            label: data.name,
-                            cityName: data.cityName,
-                            countryName: data.countryName,
-                        };
-                    });
-                };
+                "language": "tr-TR"
+            },
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Basic ${process.env.REACT_APP_API_CLIENT_TOKEN}`,
+                },
+            }
+        ).then((response) => {
+            const { data } = response || {};
+            const convertDataArray = (dataArray: any) => {
+                return dataArray.map((data: any) => {
+                    return {
+                        value: data.id,
+                        label: data.name,
+                        cityName: data.cityName,
+                        countryName: data.countryName,
+                    };
+                });
+            };
 
-                setState({
-                    busLocations: convertDataArray(data?.data)
-                })
+            setState({
+                busLocations: convertDataArray(data?.data)
+            })
 
-            }).catch((err) => {
-                setState({
-                    error: err.message
-                })
-            });
-        }
+        }).catch((err) => {
+            setState({
+                error: err.message
+            })
+        });
     }, [value])
 
     const handleTodayClick = () => {

@@ -38,7 +38,6 @@ export const GlobalContextProvider = ({ children }: { children: ReactNode }) => 
                 setValue(response.data)
                 return response.data;
             } catch (error) {
-                console.error('Error fetching session:', error);
                 throw error;
             }
         };

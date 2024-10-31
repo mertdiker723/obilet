@@ -13,7 +13,7 @@ import NavbarTitle from "../../components/Journey/NavbarTitle";
 
 // Core
 import { useData } from "../../core/store/AppStore";
-import { GetJourneys } from "../../core/apiRoutes/route";
+import { GetJourneys, TEST_DEVICE_ID, TEST_SESSION_ID } from "../../core/apiRoutes/route";
 import { extractTime } from "../../core/utils/helper";
 
 // Style
@@ -39,44 +39,40 @@ const Journey = () => {
 
 
     useEffect(() => {
-        if (value?.status === 'Success') {
-            const { data } = value || {};
-            const deviceId = data ? data['device-id'] : undefined;
-            const sessionId = data ? data['session-id'] : undefined;
+        const { data } = value || {};
+        const sessionId = data ? data['session-id'] : TEST_SESSION_ID;
+        const deviceId = data ? data['device-id'] : TEST_DEVICE_ID;
 
-            axios.post(
-                GetJourneys,
-                {
-                    "device-session": {
-                        "session-id": sessionId,
-                        "device-id": deviceId
-                    },
-                    "date": departureDate,
-                    "language": "tr-TR",
-                    "data": {
-                        "origin-id": originId,
-                        "destination-id": destinationId,
-                        "departure-date": departureDate
-                    }
+        axios.post(
+            GetJourneys,
+            {
+                "device-session": {
+                    "session-id": sessionId,
+                    "device-id": deviceId
                 },
-                {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Basic ${process.env.REACT_APP_API_CLIENT_TOKEN}`,
-                    },
+                "date": departureDate,
+                "language": "tr-TR",
+                "data": {
+                    "origin-id": originId,
+                    "destination-id": destinationId,
+                    "departure-date": departureDate
                 }
-            ).then((response) => {
-                const { data } = response || {};
-                setJourney(data.data);
-                setLoading(false);
-            }).catch((err) => {
-                setError(err.message);
-                setLoading(false);
-            });
-        } else {
-            setError("Verileri çekerken bir hata oluştur..!");
+            },
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Basic ${process.env.REACT_APP_API_CLIENT_TOKEN}`,
+                },
+            }
+        ).then((response) => {
+            const { data } = response || {};
+            setJourney(data.data);
             setLoading(false);
-        }
+        }).catch((err) => {
+            setError(err.message);
+            setLoading(false);
+        });
+
     }, [departureDate, destinationId, originId, value])
 
     const handleBack = () => {
