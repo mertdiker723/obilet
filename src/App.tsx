@@ -7,12 +7,15 @@ import routes from "./core/routes"
 // Common
 import LinearLoader from "./common/LinearLoader";
 
+// Store
+import { GlobalContextProvider } from "./core/store/AppStore";
+
 //Style
 import "./App.scss"
 
 const App = () => {
   return (
-    <>
+    <GlobalContextProvider>
       <Router>
         <Suspense fallback={<LinearLoader />}
         >
@@ -29,7 +32,7 @@ const App = () => {
           </Routes>
         </Suspense>
       </Router>
-    </>
+    </GlobalContextProvider>
   )
 }
 
