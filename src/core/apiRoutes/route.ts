@@ -1,5 +1,5 @@
 
-const mainURL = '/api'
+const mainURL = 'https://v2-api.obilet.com/api'
 
 
 export const GetSession = `${mainURL}/client/getsession`;
