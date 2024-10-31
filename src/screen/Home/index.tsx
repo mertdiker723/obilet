@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { useEffect, useReducer, useState } from 'react';
+import { useEffect, useReducer } from 'react';
 import { Button, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
@@ -13,6 +13,9 @@ import { useData } from '../../core/store/AppStore';
 // Core
 import { GetBusLocations } from '../../core/apiRoutes/route';
 import { formatToCustomDate, getFormattedDate } from '../../core/utils/helper';
+
+// Common
+import ErrorMessage from '../../common/ErrorMessage';
 
 // Model
 import { IOption } from '../../Model/Option';
@@ -31,20 +34,21 @@ interface IState {
     isTodaySelected: boolean;
     busLocations: IOption[];
     error: string | null;
+    selectedCityFrom: IOption | null;
+    selectedCityTo: IOption | null;
 }
 const Home = () => {
     const [state, setState] = useReducer((currentState: IState, newState: Partial<IState>): IState => ({ ...currentState, ...newState }), {
-        selectedDate: (getFormattedDate(new Date())),
+        selectedDate: getFormattedDate(new Date(new Date().setDate(new Date().getDate() + 1))),
         selecedDatePure: new Date(),
-        isTodaySelected: true,
+        isTodaySelected: false,
         busLocations: [],
-        error: null
+        error: null,
+        selectedCityFrom: null,
+        selectedCityTo: null
     });
 
-    const [selectedCityFrom, setSelectedCityFrom] = useState<IOption | null>(null);
-    const [selectedCityTo, setSelectedCityTo] = useState<IOption | null>(null);
-
-    const { selectedDate, isTodaySelected, busLocations, selecedDatePure, error } = state;
+    const { selectedDate, isTodaySelected, busLocations, selecedDatePure, error, selectedCityFrom, selectedCityTo } = state;
 
     // navigate
     const navigate = useNavigate();
@@ -54,9 +58,13 @@ const Home = () => {
             error: null
         });
         if (type === 'from') {
-            setSelectedCityFrom(newValue);
+            setState({
+                selectedCityFrom: newValue
+            })
         } else {
-            setSelectedCityTo(newValue);
+            setState({
+                selectedCityTo: newValue
+            })
         }
     };
 
@@ -127,25 +135,38 @@ const Home = () => {
         })
     };
 
-    const handleFindTicks = () => {
-        if (!(selectedCityFrom && selectedCityTo)) {
-            setState({
-                error: "Lütfen şehir seçiniz..!"
-            })
-        } else {
-            navigate(`/journey?originId=${selectedCityFrom?.value}&destinationId=${selectedCityTo?.value}&departureDate=${formatToCustomDate(selecedDatePure)}`);
+    const validateCities = () => {
+        if (!selectedCityFrom || !selectedCityTo) {
+            return "Lütfen şehir seçiniz..!";
         }
+        if (selectedCityTo.value === selectedCityFrom.value) {
+            return "Hem kalkış hem de varış noktası olarak aynı lokasyonu seçilemez.";
+        }
+        return null;
+    };
+
+    const handleFindTicks = () => {
+        const errorMessage = validateCities();
+
+        if (errorMessage) {
+            setState({ error: errorMessage });
+        } else {
+            navigate(`/journey?originId=${selectedCityFrom?.value}&destinationId=${selectedCityTo?.value}&departureDate=${formatToCustomDate(selecedDatePure)}&fromCity=${selectedCityFrom?.label}&toCity=${selectedCityTo?.label}`);
+        }
+
     };
     const handleSwapCities = () => {
-        setSelectedCityFrom((prev) => selectedCityTo);
-        setSelectedCityTo((prev) => selectedCityFrom);
+        setState({
+            selectedCityFrom: selectedCityTo,
+            selectedCityTo: selectedCityFrom
+        })
     };
 
     return (
         <>
             <Navbar />
             <div className='home-container'>
-                {error && <div>{error}</div>}
+                {error && <ErrorMessage width='300px' message={error} />}
                 <AutocompleteInput
                     value={selectedCityFrom}
                     type="from"

@@ -1,0 +1,14 @@
+.navbar-journey-conitaner {
+  text-align: center;
+  margin: 10px 0px 10px 0px;
+  .city-names {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+
+  .departure-date {
+    margin-top: 3px;
+    font-size: 15px;
+  }
+}

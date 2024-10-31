@@ -4,7 +4,12 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { Box, Typography, Stack, Container, CircularProgress } from "@mui/material";
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
+// Common
 import Navbar from "../../common/Navbar"
+import ErrorMessage from "../../common/ErrorMessage";
+
+// Component
+import NavbarTitle from "../../components/Journey/NavbarTitle";
 
 // Core
 import { useData } from "../../core/store/AppStore";
@@ -29,6 +34,8 @@ const Journey = () => {
     const originId = searchParams.get('originId');
     const destinationId = searchParams.get('destinationId');
     const departureDate = searchParams.get('departureDate');
+    const fromCity = searchParams.get('fromCity');
+    const toCity = searchParams.get('toCity');
 
 
     useEffect(() => {
@@ -78,9 +85,11 @@ const Journey = () => {
     };
     return (
         <>
-            <Navbar showBackButton handleBack={handleBack} title="İstanbul Avrupa - Ankara" />
+            <Navbar showBackButton handleBack={handleBack}
+                title={<NavbarTitle fromCity={fromCity} toCity={toCity} departureDate={departureDate} />}
+            />
             <Container>
-                {error && <div>{error}</div>}
+                {error && <ErrorMessage message={error} width="100%" />}
                 {
                     loading && (
                         <Box sx={{ display: 'flex', justifyContent: "center", mt: 5 }}>

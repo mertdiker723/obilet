@@ -21,3 +21,16 @@ export const getFormattedDate = (date: Date): string => {
     const options: Intl.DateTimeFormatOptions = { day: 'numeric', month: 'long', year: 'numeric', weekday: 'long' };
     return date.toLocaleDateString('tr-TR', options);
 }
+
+
+export const formatToDayMonthWeekDate = (date: string | null) => {
+    if (date) {
+        const dateItem = new Date(date);
+        const day = new Intl.DateTimeFormat("tr-TR", { day: "numeric" }).format(dateItem);
+        const month = new Intl.DateTimeFormat("tr-TR", { month: "long" }).format(dateItem);
+        const weekday = new Intl.DateTimeFormat("tr-TR", { weekday: "long" }).format(dateItem);
+
+        return `${day} ${month} ${weekday}`;
+    }
+    return null
+};

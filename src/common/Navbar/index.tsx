@@ -4,7 +4,7 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import "./Style.scss"
 
 interface NavbarProps {
-    title?: string;
+    title?: React.ReactNode;
     showBackButton?: boolean;
     handleBack?: () => void;
 }
