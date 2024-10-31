@@ -9,4 +9,15 @@
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
   width: 100%;
   margin-top: 20px;
+  color: #192289;
+
+  .price {
+    min-width: 100px;
+    background-color: #d23b38;
+    text-align: center;
+    color: white;
+    border-radius: 5px;
+    font-size: 18px;
+    padding: 3px 0px 3px 0px;
+  }
 }

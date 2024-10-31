@@ -106,24 +106,26 @@ const Journey = () => {
                                 <Stack direction="column" spacing={1}>
                                     <Stack direction="row" spacing={2}>
                                         <Box>
-                                            <Typography variant="subtitle2" color="textSecondary">Kalkış</Typography>
-                                            <Typography variant="body1">{departure && extractTime(departure)}</Typography>
+                                            <Typography variant="subtitle2">Kalkış</Typography>
+                                            <Typography variant="h6">{departure && extractTime(departure)}</Typography>
                                         </Box>
                                         <Box display="flex" alignItems="center">
                                             <ArrowForwardIcon sx={{ fontSize: 20, ml: 0.5 }} />
                                         </Box>
                                         <Box>
-                                            <Typography variant="subtitle2" color="textSecondary">Varış</Typography>
-                                            <Typography variant="body1">{arrival && extractTime(arrival)}</Typography>
+                                            <Typography variant="subtitle2">Varış</Typography>
+                                            <Typography variant="h6">{arrival && extractTime(arrival)}</Typography>
                                         </Box>
                                     </Stack>
-                                    <Typography variant="body2" color="textSecondary">
+                                    <Typography variant="body2">
                                         {destination}
                                     </Typography>
                                 </Stack>
-                                <Typography variant="h6" color="textPrimary">
-                                    {itemJourney['original-price']} TL
-                                </Typography>
+                                <Box className="price">
+                                    <Typography color="white">
+                                        {itemJourney['original-price']},00 TL
+                                    </Typography>
+                                </Box>
                             </Box>
                         )
                     })
